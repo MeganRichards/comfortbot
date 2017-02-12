@@ -1,17 +1,29 @@
-<head>
-	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-	<!--<script type="text/javascript" src="js/graph.js"></script>-->
-	<script type="text/javascript" src="js/comfort.js"></script>
-	<link rel="stylesheet" href="css/main.css"</link>
-	<script src="http://d3js.org/d3.v3.js"></script>
-</head>
+import { Template } from 'meteor/templating';
+import { ReactiveVar } from 'meteor/reactive-var';
 
-<body>
-    <div id="chart"></div>
-    <div id="dataset-picker">
-    </div>
-    <script type="text/javascript">
-      var margin = { top: 50, right: 0, bottom: 100, left: 30 },
+import '../main.html';
+
+Template.map.onCreated(function helloOnCreated() {
+  // counter starts at 0
+  this.counter = new ReactiveVar(0);
+});
+
+Template.map.helpers({
+  counter() {
+    return Template.instance().counter.get();
+  },
+});
+
+Template.map.events({
+  'click button'(event, instance) {
+    // increment the counter when button is clicked
+    instance.counter.set(instance.counter.get() + 1);
+  },
+});
+
+Template.map.onRendered(function() {
+	this.autorun(function() {
+		var margin = { top: 50, right: 0, bottom: 100, left: 30 },
           width = 960 - margin.left - margin.right,
           height = 430 - margin.top - margin.bottom,
           gridSize = Math.floor(width / 24),
@@ -22,13 +34,13 @@
           times = ["1a", "2a", "3a", "4a", "5a", "6a", "7a", "8a", "9a", "10a", "11a", "12a", "1p", "2p", "3p", "4p", "5p", "6p", "7p", "8p", "9p", "10p", "11p", "12p"];
           datasets = ["data/temp.tsv", "data/temp2.tsv"];
 
-      var svg = d3.select("#chart").append("svg")
+      	var svg = d3.select("#chart").append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      var dayLabels = svg.selectAll(".dayLabel")
+      	var dayLabels = svg.selectAll(".dayLabel")
           .data(days)
           .enter().append("text")
             .text(function (d) { return d; })
@@ -38,7 +50,7 @@
             .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
             .attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); });
 
-      var timeLabels = svg.selectAll(".timeLabel")
+      	var timeLabels = svg.selectAll(".timeLabel")
           .data(times)
           .enter().append("text")
             .text(function(d) { return d; })
@@ -48,7 +60,7 @@
             .attr("transform", "translate(" + gridSize / 2 + ", -6)")
             .attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
 
-      var heatmapChart = function(tsvFile) {
+      	var heatmapChart = function(tsvFile) {
         d3.tsv(tsvFile,
         function(d) {
           return {
@@ -121,21 +133,5 @@
         .on("click", function(d) {
           heatmapChart(d);
         });
-    </script>
-	
-	<p>Enter comfort variables below!</p>
-	
-	<form id="comfort_vals">
-		Ambient Temp: <input type="text" name="TA"><br>
-		Radiant Temp: <input type="text" name="TR"><br>
-		Velocity: <input type="text" name="VEL"><br>
-		RH: <input type="text" name="RH"><br>
-		MET: <input type="text" name="MET"><br>
-		CLO: <input type="text" name="CLO"><br>
-		WME: <input type="text" name="WME"><br>
-		PATM: <input type="text" name="PATM"><br>
-		<input type="submit" name="Submit" value="Submit">
-	</form>
-	
-	<div class="result"></div>
-</body>
+	})
+});

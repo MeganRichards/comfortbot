@@ -1,0 +1,33 @@
+<head>
+  <!--
+  <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="js/graph.js"></script>
+  <script type="text/javascript" src="js/comfort.js"></script>
+  -->
+  <link rel="stylesheet" href="css/main.css"</link>
+  <script src="http://d3js.org/d3.v3.js"></script>
+  <title>Comfortbot</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> map}}
+  {{> info}}
+</body>
+
+<template name="map">
+    <div id="chart"></div>
+    <div id="dataset-picker">
+    </div>
+</template>
+
+<template name="info">
+  <h2>Learn Meteor!</h2>
+  <ul>
+    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
+    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
+    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
+    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
+  </ul>
+</template>
