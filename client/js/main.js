@@ -12,6 +12,9 @@ Template.map.helpers({
   counter() {
     return Template.instance().counter.get();
   },
+  room_name() {
+    return "BBW 250";
+  }
 });
 
 Template.map.events({

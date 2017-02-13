@@ -1,3 +1,74 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+body {
+	background-color: #F2FFF9;
+}
+
+button, input {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px;
+	color: #F2FFF9;
+	background-color: #9b59b6;
+	transition: all 0.3s ease 0s;
+	padding: 10px 15px;
+	font-size: 1.0em;
+	margin-right: 10px;
+}
+
+input:hover {
+	background-color: #8e44ad;
+}
+
+body, p, h1, h2, div, li {
+	font-family: 'Montserrat', sans-serif;
+}
+
+.green {
+	background-color: #2ecc71;
+}
+a.green:hover {
+	background-color: #27ae60 !important;
+}
+
+.red {
+	background-color: #e74c3c;
+}
+a.red:hover {
+	background-color: #c0392b !important;
+}
+
+.blue {
+	background-color: #3498db;
+}
+a.blue:hover {
+	background-color: #2980b9 !important;
+}
+
+/*
+.nav-tabs{
+  background-color:#161616;
+}
+.tab-content{
+    background-color:#303136;
+    color:#fff;
+    padding:5px
+}
+*/
+
+.nav-tabs > li > a {
+	color: #F2FFF9;	
+	font-size: 1.0em;
+}
+.nav-tabs > li.active > a {
+	background-color: #F2FFF9 !important;
+}
+.nav-tabs > li > a:hover{
+	/*background-color: #303136 !important; */
+    color:#F2FFF9;
+}
+
 rect.bordered {
 	stroke: #E6E6E6;
 	stroke-width:2px;   
