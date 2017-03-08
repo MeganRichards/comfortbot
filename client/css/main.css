@@ -87,3 +87,28 @@ text.axis-workweek {
 text.axis-worktime {
 	fill: #000;
 }
+
+#comfort {
+	margin: 20px 0px;
+	float: left;
+	display: table;
+}
+
+.circle {
+	background: #2ecc71;
+	display: table-cell;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px; 
+	/* width and height can be anything, as long as they're equal */
+}
+
+#comfort-desc {
+	padding-left: 10px;
+	display: table-cell;
+	font-size: 2.2em;
+}
+
+#point-stats {
+	margin-top: 80px;
+}

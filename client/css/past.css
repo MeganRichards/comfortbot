@@ -1,63 +1,114 @@
-/* CSS Tree menu styles */
-ol.tree
-{
-	padding: 0 0 0 30px;
-	width: 300px;
-}
-.tree li 
-{ 
-	position: relative; 
-	margin-left: -15px;
-	list-style: none;
-}
-.tree li.file
-{
-	margin-left: -1px !important;
-}
-.tree li.file a
-{
-	background: url(document.png) 0 0 no-repeat;
-	padding-left: 21px;
-	text-decoration: none;
-	display: block;
-}
-.tree li.file a[href *= '.pdf']	{ background: url(tree/document.png) 0 0 no-repeat; }
-.tree li.file a[href *= '.html']	{ background: url(tree/document.png) 0 0 no-repeat; }
-.tree li.file a[href $= '.css']	{ background: url(tree/document.png) 0 0 no-repeat; }
-.tree li.file a[href $= '.js']		{ background: url(tree/document.png) 0 0 no-repeat; }
-.tree li input
-{
-	position: absolute;
-	left: 0;
-	margin-left: 0;
-	opacity: 0;
-	z-index: 2;
-	cursor: pointer;
-	height: 1em;
-	width: 1em;
-	top: 0;
-}
-.tree li input + ol
-{
-	background: url(tree/toggle-small-expand.png) 40px 0 no-repeat;
-	margin: -0.938em 0 0 -44px; /* 15px */
-	height: 1em;
-}
-.tree li input + ol > li { display: none; margin-left: -14px !important; padding-left: 1px; }
-.tree li label
-{
-	background: url(tree/folder-horizontal.png) 15px 1px no-repeat;
-	cursor: pointer;
-	display: block;
-	padding-left: 37px;
+/* ————————————————————–
+  Tree core styles
+*/
+.tree { margin: 1em; }
+
+.tree input {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  }
+
+.tree input ~ ul { display: none; }
+
+.tree input:checked ~ ul { display: block; }
+
+/* ————————————————————–
+  Tree rows
+*/
+.tree li {
+  line-height: 1.2;
+  position: relative;
+  padding: 0 0 1em 1em;
+  }
+
+.tree ul li { padding: 1em 0 0 1em; }
+
+.tree > li:last-child { padding-bottom: 0; }
+
+/* ————————————————————–
+  Tree labels
+*/
+.tree_label {
+  position: relative;
+  display: inline-block;
 }
 
-.tree li input:checked + ol
-{
-	background: url(tree/toggle-small.png) 40px 5px no-repeat;
-	margin: -1.25em 0 0 -44px; /* 20px */
-	padding: 1.563em 0 0 80px;
-	height: auto;
+label.tree_label { cursor: pointer; }
+
+label.tree_label:hover { color: #666; }
+
+/* ————————————————————–
+  Tree expanded icon
+*/
+label.tree_label:before {
+  background: #000;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  float: left;
+  margin: 0 1em 0 -2em;
+  width: 1em;
+  height: 1em;
+  border-radius: 1em;
+  content: '+';
+  text-align: center;
+  line-height: .9em;
+  }
+
+:checked ~ label.tree_label:before { content: '–'; }
+
+/* ————————————————————–
+  Tree branches
+*/
+/*
+.tree li:before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -.5em;
+  display: block;
+  width: 0;
+  border-left: 1px solid #777;
+  content: "";
+  }
+
+.tree_label:after {
+  position: absolute;
+  top: 0;
+  left: -1.5em;
+  display: block;
+  height: 0.5em;
+  width: 1em;
+  border-bottom: 1px solid #777;
+  border-left: 1px solid #777;
+  border-radius: 0 0 0 .3em;
+  content: '';
+  }
+*/
+
+label.tree_label:after { border-bottom: 0; }
+
+:checked ~ label.tree_label:after {
+  border-radius: 0 .3em 0 0;
+  border-top: 1px solid #777;
+  border-right: 1px solid #777;
+  border-bottom: 0;
+  border-left: 0;
+  bottom: 0;
+  top: 0.5em;
+  height: auto;
+  }
+
+.tree li:last-child:before {
+  height: 1em;
+  bottom: auto;
+  }
+
+.tree > li:last-child:before { display: none; }
+
+.tree_custom {
+  display: block;
+  background: #eee;
+  padding: 1em;
+  border-radius: 0.3em;
 }
-.tree li input:checked + ol > li { display: block; margin: 0 0 0.125em;  /* 2px */}
-.tree li input:checked + ol > li:last-child { margin: 0 0 0.063em; /* 1px */ }
