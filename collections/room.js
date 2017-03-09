@@ -1,3 +1,3 @@
-Rooms = new Mongo.Collection('rooms');
-Dates = new Mongo.Collection('dates');
+Rooms = new Mongo.Collection('room');
+Maps = new Mongo.Collection('maps');
 Points = new Mongo.Collection('points');
