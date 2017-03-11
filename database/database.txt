@@ -1,0 +1,28 @@
+rooms = {
+  "amos" : {
+    "layout" : {
+      "width" : 50,
+      "height" : 50,
+      "datapoints" : {
+        "x0y1" : {
+          "filled" : 0
+        }
+      }
+    },
+    "01202017" : {
+      "x0y1" : {
+        "temperature" : 24,
+        "pressure": 11
+      },
+      "x0y2" : {
+        "temperature" : 24,
+        "pressure": 10
+      }
+    },
+    "01202017" :
+  },
+  "patrick" : {
+    "01202017" : [datapoint],
+    "01202017" : [datapoint]
+  }
+}
