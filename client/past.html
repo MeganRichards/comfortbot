@@ -2,6 +2,24 @@
   <h2>Previous Maps</h2>
 
   <ul class="tree">
+  	{{#each room}}
+		<li>
+			<input checked="checked" id="{{name}}" type="checkbox">
+			<label class="tree_label" for="{{name}}">{{name}}</label>
+			<ul>
+				{{#each year}}
+					<input checked="checked" id="{{name}}{{year_num}}" type="checkbox">
+					<label class="tree_label" for="{{name}}{{year_num}}">{{name}}</label>
+					<ul>
+						{{#each day}}
+							<li><span class="tree_label">{{val}}</span></li>
+						{{/each}}
+					</ul>
+				{{/each}}
+			</ul>
+		</li>
+	{{/each}}
+	<!--
     <li>
       <input type="checkbox" checked="checked" id="c1" />
       <label class="tree_label" for="c1">Level 0</label>
@@ -58,5 +76,6 @@
         </li>
       </ul>
     </li>
+	-->
   </ul>
 </template>

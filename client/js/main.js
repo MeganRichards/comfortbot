@@ -4,8 +4,16 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import '../main.html';
 
 Template.map.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
+  this.counter = new ReactiveVar(0);	// counter starts at zero
+  this.room_name = "BBW 280";	// default room is BBW 280 for no reason
+
+  // current date to be displayed
+  this.year = (new Date()).getFullYear();
+  this.month= (new Date()).getMonth();
+  this.day = (new Date()).getDate();
+
+  // this variable holds the json we'll manipulate for the tree menu
+  //this.room = 
 });
 
 Template.map.helpers({
@@ -13,7 +21,21 @@ Template.map.helpers({
     return Template.instance().counter.get();
   },
   room_name() {
-    return "BBW 250";
+    return Template.instance().room_name.get();
+  },
+  // gets name of all rooms in Rooms collection
+  all_room_names() {
+   return [{name: "BBW 280"}];	// static for now 
+  },
+  // uses room json to get all years
+  year() {
+	  return [{year_num: "2015"}, {year_num: "2016"}];
+  },
+  month() {
+	  return ["Jan", "Feb", "Mar"];
+  },
+  day() {
+	  return [{val: "4"}, {val: "7"}];
   }
 });
 
