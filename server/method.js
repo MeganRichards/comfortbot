@@ -7,8 +7,8 @@ Meteor.methods({
 	'insertRoom': function(room) {
 		Rooms.insert({
 			name: room.name,
-			dim: room.dim,
-			points: room.points,
+			//dim: room.dim,
+			//points: room.points,
 			created_at: new Date(),
 		});
 	},

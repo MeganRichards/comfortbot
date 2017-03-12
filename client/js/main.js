@@ -13,19 +13,22 @@ Template.map.onCreated(function helloOnCreated() {
   this.day = (new Date()).getDate();
 
   // this variable holds the json we'll manipulate for the tree menu
-  //this.room = 
+  //this.room = Rooms.find({name: this.room_name);
 });
 
 Template.map.helpers({
   counter() {
-    return Template.instance().counter.get();
+	return Template.instance().counter.get();
   },
   room_name() {
-    return Template.instance().room_name.get();
+	return Template.instance().room_name.get();
   },
+});
+
+Template.past.helpers({
   // gets name of all rooms in Rooms collection
   all_room_names() {
-   return [{name: "BBW 280"}];	// static for now 
+  	return Rooms.find();	// static for now 
   },
   // uses room json to get all years
   year() {
@@ -35,7 +38,7 @@ Template.map.helpers({
 	  return ["Jan", "Feb", "Mar"];
   },
   day() {
-	  return [{val: "4"}, {val: "7"}];
+	  return [{val: "March 4"}, {val: "March 7"}];
   }
 });
 
