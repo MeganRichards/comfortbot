@@ -7,13 +7,13 @@
 			<input id="{{name}}" type="checkbox" />
 			<label class="tree_label" for="{{name}}">{{name}}</label>
 			<ul>
-				{{#each year}}
+				{{#each years}}
 					<li>
 						<input id="{{name}}{{this}}" type="checkbox" />
 						<label class="tree_label" for="{{name}}{{this}}">{{this}}</label>
 						<ul>
-							{{#each day}}
-								<li><span class="tree_label">{{val}}</span></li>
+							{{#each day ../name this}}
+								<li><span class="tree_label">{{this}}</span></li>
 							{{/each}}
 						</ul>
 					</li>

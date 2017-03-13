@@ -19,7 +19,6 @@ Template.past.onCreated(function pastOnCreated() {
 });
 
 
-
 Template.map.helpers({
   counter() {
 	return Template.instance().counter.get();
@@ -36,21 +35,13 @@ Template.past.helpers({
   all_room_names() {
   	return Rooms.find();
   },
-  // uses room json to get all years
-  year() {
-//    function inYear(year) {
-//      return year == this.year;
-//    }
-//    var filtered = this.room_points.filter(inYear);
-    
-    console.log("year " + Template.instance().year.get());
-	return Points.find({room: "BBW280"});//[{year_num: "2015"}, {year_num: "2016"}];
-  },
-  month() {
-	return ["Jan", "Feb", "Mar"];
-  },
-  day() {
-	return [{val: "March 4"}, {val: "March 7"}];
+  // return all unique month/days in the year
+  day(room_name, year) {
+	return _.uniq(Points.find({room: room_name, year: year}, {
+		sort: {day: 1, month: 1}, fields: {day: true, month: true}
+		}).fetch().map(function(x) {
+			return "" + ('0' + (x.month + 1)).slice(-2) + ('0' + x.day).slice(-2);
+			}), true);
   }
 });
 
