@@ -5,16 +5,20 @@ import '../main.html';
 
 Template.map.onCreated(function helloOnCreated() {
   this.counter = new ReactiveVar(0);	// counter starts at zero
-  this.room_name = "BBW 280";	// default room is BBW 280 for no reason
+  this.room_name = "BBW280";	// default room is BBW 280 for no reason
+});
 
+Template.past.onCreated(function pastOnCreated() {
   // current date to be displayed
-  this.year = (new Date()).getFullYear();
-  this.month= (new Date()).getMonth();
-  this.day = (new Date()).getDate();
+  this.year = new ReactiveVar((new Date()).getFullYear());
+  this.month = new ReactiveVar((new Date()).getMonth());
+  this.day= new ReactiveVar((new Date()).getDate());
 
   // this variable holds the json we'll manipulate for the tree menu
-  //this.room = Rooms.find({name: this.room_name);
+  this.room_points = new ReactiveVar(Points.find({room: this.room_name}));
 });
+
+
 
 Template.map.helpers({
   counter() {
@@ -25,20 +29,28 @@ Template.map.helpers({
   },
 });
 
+
+// TODO: separate into it's own file
 Template.past.helpers({
   // gets name of all rooms in Rooms collection
   all_room_names() {
-  	return Rooms.find();	// static for now 
+  	return Rooms.find();
   },
   // uses room json to get all years
   year() {
-	  return [{year_num: "2015"}, {year_num: "2016"}];
+//    function inYear(year) {
+//      return year == this.year;
+//    }
+//    var filtered = this.room_points.filter(inYear);
+    
+    console.log("year " + Template.instance().year.get());
+	return Points.find({room: "BBW280"});//[{year_num: "2015"}, {year_num: "2016"}];
   },
   month() {
-	  return ["Jan", "Feb", "Mar"];
+	return ["Jan", "Feb", "Mar"];
   },
   day() {
-	  return [{val: "March 4"}, {val: "March 7"}];
+	return [{val: "March 4"}, {val: "March 7"}];
   }
 });
 

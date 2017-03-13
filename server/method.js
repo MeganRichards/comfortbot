@@ -9,8 +9,28 @@ Meteor.methods({
 			name: room.name,
 			//dim: room.dim,
 			//points: room.points,
+			years: [],
 			created_at: new Date(),
 		});
+	},
+
+	'insertTest': function() {
+		room_name = "BBW280";
+		d = new Date();
+		// update Rooms to include this year, if not already included
+		Rooms.update({name: room_name}, {
+			$push: {
+				years: d.getFullYear()
+			}
+		});
+//
+//		if (!Rooms[room_name].years.includes(d.getFullYear())) {
+//			Rooms.update(name: room_name, {
+//				$push: {
+//					years: d.getFullYear()
+//				}
+//			});
+//		}
 	},
 
 	/**
@@ -37,6 +57,13 @@ Meteor.methods({
     		"rad_temp" : point.radtemp,
     		"humidity" : point.humid,
     		"velocity" : point.velocity
+		});
+
+		// update Rooms to include this year, if not already included
+		Rooms.update({name: room_name}, {
+			$addToSet: {
+				years: d.getFullYear()
+			}
 		});
 
 //		// check if this date already has an entry in room_name
