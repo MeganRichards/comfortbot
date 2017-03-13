@@ -35,12 +35,18 @@ Template.past.helpers({
   all_room_names() {
   	return Rooms.find();
   },
+  date_string(date) {
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	month = date[0] + date[1];
+	day = date[2] + date[3];
+	return "" + months[parseInt(month)] + " " + day;
+  },
   // return all unique month/days in the year
   day(room_name, year) {
 	return _.uniq(Points.find({room: room_name, year: year}, {
 		sort: {day: 1, month: 1}, fields: {day: true, month: true}
 		}).fetch().map(function(x) {
-			return "" + ('0' + (x.month + 1)).slice(-2) + ('0' + x.day).slice(-2);
+			return "" + ('0' + (x.month)).slice(-2) + ('0' + x.day).slice(-2);
 			}), true);
   }
 });
