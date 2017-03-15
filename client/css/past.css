@@ -1,3 +1,10 @@
+.tree-node {
+  list-style-type: none;
+}
+.selected {
+  background: yellow;
+}
+
 /* ————————————————————–
   Tree core styles
 */

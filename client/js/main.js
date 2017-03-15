@@ -5,7 +5,7 @@ import '../main.html';
 
 Template.map.onCreated(function helloOnCreated() {
   this.counter = new ReactiveVar(0);	// counter starts at zero
-  this.room_name = "BBW280";	// default room is BBW 280 for no reason
+  this.room_name = new ReactiveVar("BBW280");	// default room is BBW 280 for no reason
 });
 
 Template.past.onCreated(function pastOnCreated() {
@@ -13,6 +13,10 @@ Template.past.onCreated(function pastOnCreated() {
   this.year = new ReactiveVar((new Date()).getFullYear());
   this.month = new ReactiveVar((new Date()).getMonth());
   this.day= new ReactiveVar((new Date()).getDate());
+
+  this.test = new ReactiveVar("FDSA");
+  // currently highlighted date
+  //this.selected_date = map.instance().room_name.get() + this.year + this.month + this.day;
 
   // this variable holds the json we'll manipulate for the tree menu
   this.room_points = new ReactiveVar(Points.find({room: this.room_name}));
@@ -28,18 +32,20 @@ Template.map.helpers({
   },
 });
 
-
 // TODO: separate into it's own file
 Template.past.helpers({
+  get_test() {
+    return Template.instance().test.get();
+  },
   // gets name of all rooms in Rooms collection
   all_room_names() {
   	return Rooms.find();
   },
   date_string(date) {
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-	month = date[0] + date[1];
-	day = date[2] + date[3];
-	return "" + months[parseInt(month)] + " " + day;
+	  month = date[0] + date[1];
+	  day = date[2] + date[3];
+	  return "" + months[parseInt(month)] + " " + day;
   },
   // return all unique month/days in the year
   day(room_name, year) {
@@ -48,6 +54,15 @@ Template.past.helpers({
 		}).fetch().map(function(x) {
 			return "" + ('0' + (x.month)).slice(-2) + ('0' + x.day).slice(-2);
 			}), true);
+  },
+  // checks if tree node is the currently selected one
+  // for highlighting purposes
+  current_room(datestring) {
+    current_node = Template.instance().month.get() + Template.instance().day.get();
+    if (datestring == current_node) {
+      return true;
+    }
+    return false;
   }
 });
 
@@ -55,6 +70,32 @@ Template.map.events({
   'click button'(event, instance) {
     // increment the counter when button is clicked
     instance.counter.set(instance.counter.get() + 1);
+  },
+});
+
+Template.past.events({
+  // not the best solution admittedly
+  // TODO: make it so only one is selected at a time
+  'click .tree-node'(event, instance) {
+    var report = event.currentTarget.id;
+    var datestring = report.split("-")[1];
+    var classes = event.currentTarget.className;
+
+    console.log(parseInt(datestring));
+    var m = "" + ('0' + instance.month.get()).slice(-2);
+    var d = "" + ('0' + instance.day.get()).slice(-2);
+    var current = parseInt(instance.year.get() + m + d);
+    if (parseInt(datestring) == current) {
+      if (classes.split(" ").length > 1)  {
+        // is currently selected
+        event.currentTarget.classList.remove("selected");
+      } else {
+        event.currentTarget.className += " selected";
+      }
+    }    
+  },
+  'click .submit'(event, instance) {
+    // re-render the d3js component using 
   },
 });
 
