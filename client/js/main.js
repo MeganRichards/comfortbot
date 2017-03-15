@@ -10,6 +10,7 @@ Template.map.onCreated(function helloOnCreated() {
 
 Template.past.onCreated(function pastOnCreated() {
   // current date to be displayed
+  this.room = new ReactiveVar("BBW280");
   this.year = new ReactiveVar((new Date()).getFullYear());
   this.month = new ReactiveVar((new Date()).getMonth());
   this.day= new ReactiveVar((new Date()).getDate());
@@ -73,29 +74,54 @@ Template.map.events({
   },
 });
 
+var get_id = function(name, year, month, day) {
+  month = "" + ('0' + (month)).slice(-2);
+  day = "" + ('0' + (day)).slice(-2);
+
+  return name + "-" + year + month + day;
+};
+
 Template.past.events({
-  // not the best solution admittedly
-  // TODO: make it so only one is selected at a time
+  /*
+    not the best solution admittedly
+
+    The more I write this function, the sadder I get
+
+    The reason this is so bad is because it doesn't bind
+    the behavior to the state of the object at all, I'm
+    literally just manipulating ids and storing those values
+    which means I'll always have to do all this bs just for a simple
+    highlight.  If I binded the behavior to the state, i.e., created 
+    a new collection that contains the one highlighted point, or added 
+    a highlight field to each points object, then this would be better.
+    but no, I have to store FOUR (4) variables just to keep track of a 
+    highlighted element which I then have to mush together and somehow relate
+    to the database anyway.  Man, how annoying and poorly written and I don't
+    know why I'm just typing about it instead of changing it.  W/e
+  */
   'click .tree-node'(event, instance) {
     var report = event.currentTarget.id;
     var datestring = report.split("-")[1];
     var classes = event.currentTarget.className;
 
-    console.log(parseInt(datestring));
     var m = "" + ('0' + instance.month.get()).slice(-2);
     var d = "" + ('0' + instance.day.get()).slice(-2);
     var current = parseInt(instance.year.get() + m + d);
-    if (parseInt(datestring) == current) {
-      if (classes.split(" ").length > 1)  {
-        // is currently selected
-        event.currentTarget.classList.remove("selected");
-      } else {
-        event.currentTarget.className += " selected";
-      }
-    }    
+    if (classes.split(" ").length == 1)  {
+      // currently NOT selected
+      // remove previous highlight and update new one
+      var previous = document.getElementById(instance.room.get() + "-" + current);
+      previous.classList.remove("selected");
+      var new_date = event.currentTarget.id.split("-")[1];
+      event.currentTarget.className += " selected";
+      instance.year.set(parseInt(new_date.substring(0, 4)));
+      instance.month.set(parseInt(new_date.substring(4, 6)));
+      instance.day.set(parseInt(new_date.substring(6, 8)));
+    }
   },
   'click .submit'(event, instance) {
-    // re-render the d3js component using 
+    // re-render the d3js component using w/e
+
   },
 });
 
@@ -143,7 +169,8 @@ Template.map.onRendered(function() {
         function(d) {
           return {
             day: +d.day,
-            hour: +d.hour,
+            hour: +
+            d.hour,
             value: +d.value
           };
         },
