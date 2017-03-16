@@ -5,12 +5,35 @@ Meteor.methods({
 	 * @param room The room to be created
 	 */
 	'insertRoom': function(room) {
-		Rooms.insert({
-			name: room.name,
-			//dim: room.dim,
-			//points: room.points,
-			years: [],
-			created_at: new Date(),
+		if (Rooms.find({name: room.name}).count == 0) {
+			Rooms.insert({
+				name: room.name,
+				//dim: room.dim,
+				//points: room.points,
+				years: [],
+				created_at: new Date(),
+			});
+		}
+	},
+
+	/**
+	 * Updates the data of the currently loaded room.
+	 * This data is then used to find the correct points
+	 * to draw on the screen.
+	 *
+	 * @param map JSON data of the map
+	 */
+	'updateLoadedMap': function(map) {
+		if (LoadedMap.find().count() != 0) {
+			LoadedMap.remove({});
+		}
+
+		LoadedMap.insert({
+			room: map.room,
+			day: map.day,
+			month: map.month,
+			year: map.year
+			//created_at: new Date(),
 		});
 	},
 

@@ -1,3 +1,4 @@
 Rooms = new Mongo.Collection('rooms');
 Points = new Mongo.Collection('points');
-CurrentPoint = new Mongo.Collection('current_points');
+LoadedMap = new Mongo.Collection('loaded_map', {capped: true, size: 1});
+Circles = new Meteor.Collection('circles');
