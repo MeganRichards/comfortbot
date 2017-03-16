@@ -7,14 +7,7 @@ Template.map.onCreated(function helloOnCreated() {
   this.counter = new ReactiveVar(0);	// counter starts at zero
   this.room_name = new ReactiveVar("WHO CARES");
 
-  // var date = new Date();
-  // var map = {
-  //   room: "BBW280",
-  //   year: date.getFullYear(),
-  //   month: date.getMonth(),
-  //   day: date.getDate()
-  // }
-  // Meteor.call('updateLoadedMap', map);
+  //Meteor.subscribe('loaded_map');
 
   console.log("Updated map.");
 });
@@ -213,18 +206,17 @@ Template.map.onRendered(function() {
         .attr("transform", "translate(" + gridSize / 2 + ", -6)")
         .attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
 
-    var map = LoadedMap.findOne({});
-    console.log(LoadedMap.find().count());
-    console.log("MAP in room " + map);
-
     var comfortmapChart = function(update) { 
       var map = LoadedMap.findOne({});
+      if (LoadedMap.find().count() == 0) return;
       console.log(LoadedMap.find().count());
-      console.log("MAP " + map);
+      console.log("INSIDED MAP " + map);
+      //var cursor = Points.find({room: "BBW280", year: 2017, month: 2, day: 14});      
       var cursor = Points.find({room: map.room, year: map.year, month: map.month, day: map.day});
       var data = [];
       cursor.forEach(function (point) {
-        data.append(point);
+        console.log(point.x + ", " + point.y);
+        //data.append(point);
       });
       var colorScale = d3.scale.quantile()
           .domain([0, buckets - 1, d3.max(data, function (d) { return d.value; })])
@@ -287,6 +279,18 @@ Template.map.onRendered(function() {
       .on("click", function(d) {
         comfortmapChart(false);
       });
+
+    LoadedMap.find().observe({
+      added: function () {
+        // x = d3.scale.ordinal()
+        //   .domain(d3.range(LoadedMap.findOne().data.length))
+        //   .rangePoints([0, width], 1);
+        comfortmapChart(false);
+      },
+      changed: _.partial(comfortmapChart, true)
+    });
+
+
   })
 /*
     var map = LoadedMap.findOne();
