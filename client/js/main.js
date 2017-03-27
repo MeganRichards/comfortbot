@@ -4,12 +4,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import '../main.html';
 
 Template.map.onCreated(function helloOnCreated() {
-  this.counter = new ReactiveVar(0);	// counter starts at zero
-  this.room_name = new ReactiveVar("BBW280");
-
   //Meteor.subscribe('loaded_map');
-
-  console.log("Updated map.");
 });
 
 Template.past.onCreated(function pastOnCreated() {
@@ -18,30 +13,27 @@ Template.past.onCreated(function pastOnCreated() {
   this.year = new ReactiveVar((new Date()).getFullYear());
   this.month = new ReactiveVar((new Date()).getMonth());
   this.day= new ReactiveVar((new Date()).getDate());
-
-  this.test = new ReactiveVar("FDSA");
-  // currently highlighted date
-  //this.selected_date = map.instance().room_name.get() + this.year + this.month + this.day;
-
-  // this variable holds the json we'll manipulate for the tree menu
-  this.room_points = new ReactiveVar(Points.find({room: this.room_name}));
 });
 
 
 Template.map.helpers({
-  counter() {
-	return Template.instance().counter.get();
-  },
   room_name() {
-	return Template.instance().room_name.get();
+	return LoadedMap.findOne({}).room;;
   },
+  month() {
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return months[LoadedMap.findOne({}).month];
+  },
+  day() {
+    return LoadedMap.findOne({}).day;
+  },
+  year() {
+    return LoadedMap.findOne({}).year;
+  }
 });
 
 // TODO: separate into it's own file
 Template.past.helpers({
-  get_test() {
-    return Template.instance().test.get();
-  },
   // gets name of all rooms in Rooms collection
   all_room_names() {
   	return Rooms.find();
@@ -122,6 +114,8 @@ Template.past.events({
       event.currentTarget.className += " selected";
 
       // update reactive vars
+      var new_room = event.currentTarget.id.split("-")[0];
+      instance.room.set(new_room);
       var new_date = event.currentTarget.id.split("-")[1];
       instance.year.set(parseInt(new_date.substring(0, 4)));
       instance.month.set(parseInt(new_date.substring(4, 6)));
@@ -130,6 +124,8 @@ Template.past.events({
   },
   'click .submit'(event, instance) {
     // re-render the d3js component using w/e
+    // to re-render, you just need to change the 
+    // LoadedMap db object.
     var map = {
       room: instance.room.get(),
       year: instance.year.get(),
