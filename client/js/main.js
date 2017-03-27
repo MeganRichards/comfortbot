@@ -5,7 +5,7 @@ import '../main.html';
 
 Template.map.onCreated(function helloOnCreated() {
   this.counter = new ReactiveVar(0);	// counter starts at zero
-  this.room_name = new ReactiveVar("WHO CARES");
+  this.room_name = new ReactiveVar("BBW280");
 
   //Meteor.subscribe('loaded_map');
 
@@ -113,6 +113,8 @@ Template.past.events({
     var current = parseInt(instance.year.get() + m + d);
     if (classes.split(" ").length == 1)  {
       // remove previous highlight and update new one
+      // if there's an error with classList, it's because there's no data
+      // from today
       var previous = document.getElementById(instance.room.get() + "-" + current);
       previous.classList.remove("selected");
 
@@ -132,50 +134,17 @@ Template.past.events({
   },
 });
 
-// -------------------- TESTS -----------------------
-// Template.map.onRendered(function () {
-//   var svg, width = 500, height = 75, x;
-
-//   svg = d3.select('#chart').append('svg')
-//     .attr('width', width)
-//     .attr('height', height);
-
-//   var drawCircles = function (update) {
-//     var data = Circles.findOne().data;
-//     var circles = svg.selectAll('circle').data(data);
-//     if (!update) {
-//       circles = circles.enter().append('circle')
-//         .attr('cx', function (d, i) { return x(i); })
-//         .attr('cy', height / 2);
-//     } else {
-//       circles = circles.transition().duration(1000);
-//     }
-//     circles.attr('r', function (d) { return d; });
-//   }; 
-
-//   Circles.find().observe({
-//     added: function () {
-//       x = d3.scale.ordinal()
-//         .domain(d3.range(Circles.findOne().data.length))
-//         .rangePoints([0, width], 1);
-//       drawCircles(false);
-//     },
-//     changed: _.partial(drawCircles, true)
-//   });
-// }); 
-// ----------------------- END OF TESTS ------------
-
-
-
 Template.map.onRendered(function() {
 	this.autorun(function() {
+
     var margin = { top: 50, right: 0, bottom: 100, left: 30 },
       width = 960 - margin.left - margin.right,
-      height = 430 - margin.top - margin.bottom,
+      height = 580 - margin.top - margin.bottom,
       gridSize = Math.floor(width / 24),
       legendElementWidth = gridSize*2,
       buckets = 9,
       colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"], // alternatively colorbrewer.YlGnBu[9]
+      // TODO: make days + times dynamic
       days = ["1", "2", "3", "4", "5", "6", "7"],
       times = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3", "4", "5", "6", "7"];
       datasets = ["data/temp.tsv", "data/temp2.tsv"];
@@ -186,34 +155,47 @@ Template.map.onRendered(function() {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var dayLabels = svg.selectAll(".dayLabel")
-      .data(days)
-      .enter().append("text")
-        .text(function (d) { return d; })
-        .attr("x", 0)
-        .attr("y", function (d, i) { return i * gridSize; })
-        .style("text-anchor", "end")
-        .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
-        .attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); });
-
-    var timeLabels = svg.selectAll(".timeLabel")
-      .data(times)
-      .enter().append("text")
-        .text(function(d) { return d; })
-        .attr("x", function(d, i) { return i * gridSize; })
-        .attr("y", 0)
-        .style("text-anchor", "middle")
-        .attr("transform", "translate(" + gridSize / 2 + ", -6)")
-        .attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
 
     var comfortmapChart = function(update) { 
       if (LoadedMap.find().count() == 0) return;
+
+      // link to Rooms.findOne({name: map.room}).x and y;
+      var dim_x = 10, dim_y = 10;
+      days = [];
+      times = [];
+      for (i = 0; i < dim_x; i++) {
+        days.push(i);
+      }
+      for (i = 0; i < dim_y; i++) {
+        times.push(i);
+      }
+      var dayLabels = svg.selectAll(".dayLabel")
+        .data(days)
+        .enter().append("text")
+          .text(function (d) { return d; })
+          .attr("x", 0)
+          .attr("y", function (d, i) { return i * gridSize; })
+          .style("text-anchor", "end")
+          .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
+          .attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); });
+
+      var timeLabels = svg.selectAll(".timeLabel")
+        .data(times)
+        .enter().append("text")
+          .text(function(d) { return d; })
+          .attr("x", function(d, i) { return i * gridSize; })
+          .attr("y", 0)
+          .style("text-anchor", "middle")
+          .attr("transform", "translate(" + gridSize / 2 + ", -6)")
+          .attr("class", function(d, i) { return ((i >= 4 && i <= 9) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
+
+
       var map = LoadedMap.findOne({});      
       //var cursor = Points.find({room: "BBW280", year: 2017, month: 2, day: 14});      
       var cursor = Points.find({room: map.room, year: map.year, month: map.month, day: map.day});
       var data = [];
       cursor.forEach(function (point) {
-        console.log(point.x + ", " + point.y);
+        //console.log(point.x + ", " + point.y);
         data.push(point);
       });
       var colorScale = d3.scale.quantile()
@@ -263,8 +245,6 @@ Template.map.onRendered(function() {
 
       legend.exit().remove(); 
     };
-
-    comfortmapChart(false);
     
     var datasetpicker = d3.select("#dataset-picker").selectAll(".dataset-button")
       .data(datasets);
@@ -287,8 +267,5 @@ Template.map.onRendered(function() {
       },
       changed: _.partial(comfortmapChart, true)
     });
-
-
   })
-
 });

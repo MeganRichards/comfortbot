@@ -191,5 +191,4 @@ $( document ).ready(function() {
 	var result = pierceSet(10.0, 25.0, 0.15, 50.0, 1, 0.5, 40, 101.0);
 	$('.result').html("Comfort level: " + result);
 
-
 });

@@ -8,8 +8,8 @@ Meteor.methods({
 		if (Rooms.find({name: room.name}).count == 0) {
 			Rooms.insert({
 				name: room.name,
-				//dim: room.dim,
-				//points: room.points,
+				x: 10,
+				y: 10,
 				years: [],
 				created_at: new Date(),
 			});
@@ -67,7 +67,7 @@ Meteor.methods({
 		d = new Date();
 		date_key = "" + d.getFullYear() + d.getMonth() + d.getDate();
 		key = "x" + point.x + "y" + point.y;
-	
+
 		// insert the data into the database
 		Points.insert({
 			"room" : room_name,
