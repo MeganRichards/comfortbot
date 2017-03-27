@@ -2,6 +2,25 @@
 
 body {
 	background-color: #F2FFF9;
+	margin: 0px 3em;
+}
+
+a.button {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px;
+	color: #F2FFF9;
+	background-color: #9b59b6;
+	transition: all 0.3s ease 0s;
+	padding: 10px 15px;
+	font-size: 1.0em;
+	margin-right: 10px;
+}
+
+a.button:hover {
+	background-color: #8e44ad;	
+	color: #F2FFF9;
 }
 
 button, input {
