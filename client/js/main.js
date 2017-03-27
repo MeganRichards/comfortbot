@@ -130,7 +130,13 @@ Template.past.events({
   },
   'click .submit'(event, instance) {
     // re-render the d3js component using w/e
-
+    var map = {
+      room: instance.room.get(),
+      year: instance.year.get(),
+      month: instance.month.get(),
+      day: instance.day.get() 
+    };
+    Meteor.call('updateLoadedMap', map);
   },
 });
 
