@@ -5,6 +5,15 @@ body {
 	margin: 0px 3em;
 }
 
+.stats {
+	margin-top: 2em;
+	margin-bottom: 1em;
+	background-color: #ecf0f1;
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 10px;
+}
+
 a.button {
     margin-right: 2px;
     line-height: 1.42857143;

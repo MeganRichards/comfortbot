@@ -39,6 +39,7 @@ Meteor.methods({
 
 	'insertTest': function() {
 		room_name = "BBW280";
+		console.log("CALLING insertTest");
 		d = new Date();
 		// update Rooms to include this year, if not already included
 		Rooms.update({name: room_name}, {

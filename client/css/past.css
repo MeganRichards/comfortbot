@@ -1,8 +1,21 @@
 .tree-node {
   list-style-type: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  border-color: #222;
+  padding: .6em !important;
+  margin-bottom: 5px;
+  transition: all 0.3s ease 0s;
+  float: left;
+  clear: both;
 }
 .selected {
-  background: yellow;
+  background: #f1c40f;
+}
+.tree-load {
+  margin-top: 1em;
+  float: left;
+  clear: both;
 }
 
 /* ————————————————————–
@@ -26,7 +39,9 @@
   line-height: 1.2;
   position: relative;
   padding: 0 0 1em 1em;
-  }
+  float: left;
+  clear: both;
+}
 
 .tree ul li { padding: 1em 0 0 1em; }
 

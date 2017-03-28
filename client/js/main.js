@@ -5,6 +5,8 @@ import '../main.html';
 
 Template.map.onCreated(function helloOnCreated() {
   //Meteor.subscribe('loaded_map');
+  this.temperature = new ReactiveVar(0);
+  this.humidity = new ReactiveVar(0);
 });
 
 Template.past.onCreated(function pastOnCreated() {
@@ -29,6 +31,12 @@ Template.map.helpers({
   },
   year() {
     return LoadedMap.findOne({}).year;
+  },
+  temperature() {
+    return Template.instance().temperature.get();
+  },
+  humidity() {
+    return Template.instance().humidity.get();
   }
 });
 
@@ -137,8 +145,11 @@ Template.past.events({
 });
 
 Template.map.onRendered(function() {
-	this.autorun(function() {
+  // instance for the d3 event to use
+  // otherwise I'd have to use the database for clicking stuff
+  var instance = Template.instance();
 
+	this.autorun(function() {
     var margin = { top: 50, right: 0, bottom: 100, left: 30 },
       width = 960 - margin.left - margin.right,
       height = 580 - margin.top - margin.bottom,
@@ -149,7 +160,6 @@ Template.map.onRendered(function() {
       // TODO: make days + times dynamic
       days = ["1", "2", "3", "4", "5", "6", "7"],
       times = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3", "4", "5", "6", "7"];
-      datasets = ["data/temp.tsv", "data/temp2.tsv"];
 
     var svg = d3.select("#chart").append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -191,7 +201,6 @@ Template.map.onRendered(function() {
           .attr("transform", "translate(" + gridSize / 2 + ", -6)")
           .attr("class", function(d, i) { return ((i >= 4 && i <= 9) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
 
-
       var map = LoadedMap.findOne({});      
       //var cursor = Points.find({room: "BBW280", year: 2017, month: 2, day: 14});      
       var cursor = Points.find({room: map.room, year: map.year, month: map.month, day: map.day});
@@ -200,8 +209,11 @@ Template.map.onRendered(function() {
         //console.log(point.x + ", " + point.y);
         data.push(point);
       });
+
       var colorScale = d3.scale.quantile()
-          .domain([10, buckets - 1, d3.max(data, function (d) { return d.temp; })])
+          //.domain([20, 0, 30])
+          // might need to change domain based on reasonable values idk
+          .domain([d3.min(data, function(d) { return d.temp }) - 5, d3.max(data, function (d) { return d.temp; })])
           .range(colors);
 
       var cards = svg.selectAll(".hour")
@@ -223,6 +235,13 @@ Template.map.onRendered(function() {
           .style("fill", function(d) { return colorScale(d.temp); });
 
       cards.select("title").text(function(d) { return d.temp; });
+
+      // update stats template
+      cards.on("click", function(d, i) {
+        // TODO: calcuations
+        instance.temperature.set(d.temp);
+        instance.humidity.set(d.humidity);
+      });
       
       cards.exit().remove();
 
@@ -247,18 +266,6 @@ Template.map.onRendered(function() {
 
       legend.exit().remove(); 
     };
-    
-    var datasetpicker = d3.select("#dataset-picker").selectAll(".dataset-button")
-      .data(datasets);
-
-    datasetpicker.enter()
-      .append("input")
-      .attr("value", function(d){ return "Dataset " + d })
-      .attr("type", "button")
-      .attr("class", "dataset-button")
-      .on("click", function(d) {
-        comfortmapChart(false);
-      });
 
     LoadedMap.find().observe({
       added: function () {
