@@ -220,11 +220,6 @@ Template.map.onRendered(function() {
         data.push(point);
       });
 
-    // pierceSet(temp, rad_temp, velocity, rh, met, clo, wme, patm)
-    //var result = pierceSet(d.temp, d.rad_temp, d.humidity, d.velocity, 1, 0.5, 40, 101.0);
-      console.log("COMFORT: " + pierceSet(10.0, 25.0, 0.15, 50.0, 1, 0.5, 40, 101.0));
-
-
       var colorScale = d3.scale.quantile()
           //.domain([20, 0, 30])
           // might need to change domain based on reasonable values idk
@@ -257,6 +252,7 @@ Template.map.onRendered(function() {
         instance.temperature.set(d.temp);
         instance.humidity.set(d.humidity);
         instance.comfort.set(get_data(d, 0));
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
       });
       
       cards.exit().remove();
