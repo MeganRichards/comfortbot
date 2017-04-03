@@ -3,10 +3,11 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import '../main.html';
 
-Template.map.onCreated(function helloOnCreated() {
+Template.map.onCreated(function mapOnCreated() {
   //Meteor.subscribe('loaded_map');
   this.temperature = new ReactiveVar(0);
   this.humidity = new ReactiveVar(0);
+  this.comfort = new ReactiveVar(0);
 });
 
 Template.past.onCreated(function pastOnCreated() {
@@ -37,6 +38,9 @@ Template.map.helpers({
   },
   humidity() {
     return Template.instance().humidity.get();
+  },
+  comfort() {
+    return Template.instance().comfort.get();
   }
 });
 
@@ -83,6 +87,12 @@ var get_id = function(name, year, month, day) {
   day = "" + ('0' + (day)).slice(-2);
 
   return name + "-" + year + month + day;
+};
+
+// TODO: use a selection var to choose what data to display
+// from the d database variable
+var get_data = function(d, selection) {
+  return pierceSet(d.temp, d.rad_temp, d.humidity, d.velocity, 1, 0.5, 40, 101.0);
 };
 
 Template.past.events({
@@ -210,10 +220,15 @@ Template.map.onRendered(function() {
         data.push(point);
       });
 
+    // pierceSet(temp, rad_temp, velocity, rh, met, clo, wme, patm)
+    //var result = pierceSet(d.temp, d.rad_temp, d.humidity, d.velocity, 1, 0.5, 40, 101.0);
+      console.log("COMFORT: " + pierceSet(10.0, 25.0, 0.15, 50.0, 1, 0.5, 40, 101.0));
+
+
       var colorScale = d3.scale.quantile()
           //.domain([20, 0, 30])
           // might need to change domain based on reasonable values idk
-          .domain([d3.min(data, function(d) { return d.temp }) - 5, d3.max(data, function (d) { return d.temp; })])
+          .domain([d3.min(data, function(d) { return get_data(d, 0) }) - 5, d3.max(data, function (d) { return get_data(d, 0); })])
           .range(colors);
 
       var cards = svg.selectAll(".hour")
@@ -232,15 +247,16 @@ Template.map.onRendered(function() {
           .style("fill", colors[0]);
 
       cards.transition().duration(1000)
-          .style("fill", function(d) { return colorScale(d.temp); });
+          .style("fill", function(d) { return colorScale(get_data(d, 0)); });
 
-      cards.select("title").text(function(d) { return d.temp; });
+      cards.select("title").text(function(d) { return get_data(d, 0); });
 
       // update stats template
       cards.on("click", function(d, i) {
         // TODO: calcuations
         instance.temperature.set(d.temp);
         instance.humidity.set(d.humidity);
+        instance.comfort.set(get_data(d, 0));
       });
       
       cards.exit().remove();
