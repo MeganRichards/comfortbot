@@ -188,7 +188,8 @@ $( document ).ready(function() {
 		$('.result').html("Comfort level: " + result);
 	});
 	//var result = pierceSet(28.0, 28.0, 1.0, 50.0, 1.1, 0.8, 65, 84.0);	// ideal values for typing
-	var result = pierceSet(10.0, 25.0, 0.15, 50.0, 1, 0.5, 40, 101.0);
+	// pierceSet(temp, rad_temp, velocity, rh, met, clo, wme, patm)
+    var result = pierceSet(10.0, 25.0, 0.15, 50.0, 1, 0.5, 40, 101.0);
 	$('.result').html("Comfort level: " + result);
 
 });

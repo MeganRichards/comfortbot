@@ -8,6 +8,8 @@ Template.map.onCreated(function mapOnCreated() {
   this.temperature = new ReactiveVar(0);
   this.humidity = new ReactiveVar(0);
   this.comfort = new ReactiveVar(0);
+
+  this.d = new ReactiveVar({});
 });
 
 Template.past.onCreated(function pastOnCreated() {
@@ -239,6 +241,7 @@ Template.map.onRendered(function() {
           .attr("class", "hour bordered")
           .attr("width", gridSize)
           .attr("height", gridSize)
+          .attr("data-popbox", "stats")
           .style("fill", colors[0]);
 
       cards.transition().duration(1000)
@@ -252,7 +255,26 @@ Template.map.onRendered(function() {
         instance.temperature.set(d.temp);
         instance.humidity.set(d.humidity);
         instance.comfort.set(get_data(d, 0));
-        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+
+        console.log("I" + i);
+
+        if (d == instance.d.get()) {
+          instance.d.set({});
+          $("#stats").hide();
+        } else {
+          instance.d.set(d);
+          $("#stats").show();
+          var target = '#stats';
+          var position = $("#chart").offset();
+          console.log("i" + i);
+          console.log("position before" + position.top + ", " + position.left);
+          position.top += d.y*gridSize + margin.top + gridSize / 2;
+          position.left += d.x*gridSize + margin.left + gridSize / 2;
+          $("#stats").css('top', position.top).css('left', position.left);
+        }
+
+        // TODO: make .stats div appear on click
+        //$("html, body").animate({ scrollTop: $(document).height() }, 1000);
       });
       
       cards.exit().remove();
