@@ -256,8 +256,6 @@ Template.map.onRendered(function() {
         instance.humidity.set(d.humidity);
         instance.comfort.set(get_data(d, 0));
 
-        console.log("I" + i);
-
         if (d == instance.d.get()) {
           instance.d.set({});
           $("#stats").hide();
@@ -266,15 +264,11 @@ Template.map.onRendered(function() {
           $("#stats").show();
           var target = '#stats';
           var position = $("#chart").offset();
-          console.log("i" + i);
-          console.log("position before" + position.top + ", " + position.left);
-          position.top += d.y*gridSize + margin.top + gridSize / 2;
+          position.top += d.y*gridSize + margin.top + gridSize / 2 - $(target).height() / 2;
           position.left += d.x*gridSize + margin.left + gridSize / 2;
+          console.log("position after" + position.top + ", " + position.left);          
           $("#stats").css('top', position.top).css('left', position.left);
         }
-
-        // TODO: make .stats div appear on click
-        //$("html, body").animate({ scrollTop: $(document).height() }, 1000);
       });
       
       cards.exit().remove();
