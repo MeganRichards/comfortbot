@@ -251,7 +251,6 @@ Template.map.onRendered(function() {
 
       // update stats template
       cards.on("click", function(d, i) {
-        // TODO: calcuations
         instance.temperature.set(d.temp);
         instance.humidity.set(d.humidity);
         instance.comfort.set(get_data(d, 0));
@@ -262,10 +261,12 @@ Template.map.onRendered(function() {
         } else {
           instance.d.set(d);
           $("#stats").show();
+
+          // calculate position of the box
           var target = '#stats';
           var position = $("#chart").offset();
-          position.top += d.y*gridSize + margin.top + gridSize / 2 - $(target).height() / 2;
-          position.left += d.x*gridSize + margin.left + gridSize / 2;
+          position.top += d.y*gridSize + margin.top + gridSize / 2 - ($(target).outerHeight() / 2);
+          position.left += d.x*gridSize + margin.left + gridSize / 2 + 50;
           console.log("position after" + position.top + ", " + position.left);          
           $("#stats").css('top', position.top).css('left', position.left);
         }

@@ -145,11 +145,13 @@ text.axis-worktime {
     padding: 10px;
     background: #EEEFEB;
     color: #000000;
-    border: 1px solid #4D4F53;
+    border: 0px solid #4D4F53;
     border-radius: 4px;
     margin: 0px;
+    /*
     -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
     box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+	*/
 }
 
 #point-stats {	
@@ -161,24 +163,45 @@ text.axis-worktime {
 /* for creating speech bubbles */
 
 .triangle-isosceles {
-	position: relative;
-	padding: 15px;
-	margin: 1em 0 3em;
-	color: #000;
-	background: #f3961c;
-	border-radius: 10px;
-	background: linear-gradient(top, #f9d835, #f3961c);
+  position:relative;
+  padding:15px;
+  margin:1em 0.1em 3em;
+  color:#000;
+  background:#EEEFEB; /* default background for browsers without gradient support */
+  /* css3 */
+  background:-webkit-gradient(linear, 0 0, 0 100%, from(#EEEFEB), to(#EEEFEB));
+  background:-moz-linear-gradient(#EEEFEB, #EEEFEB);
+  background:-o-linear-gradient(#f9d835, #EEEFEB);
+  background:linear-gradient(#EEEFEB, #EEEFEB);
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
 }
 
 /* creates the triangle */
-.trianle-isosceles:after {
-	content: "";
-	display: block;
-	position: absolute;
-	bottom: -15px;
-	left: 50px;
-	width: 0;
-	border-width: 15px 15px 0;
-	border-style: solid;
-	border-color: #f3961c transparent;
+.triangle-isosceles.left {
+  margin-left:55px;
+  background:#EEEFEB;
+}
+
+/* creates triangle */
+.triangle-isosceles:after {
+  content:"";
+  position:absolute;
+  bottom:-15px; /* value = - border-top-width - border-bottom-width */
+  left:50px; /* controls horizontal position */
+  border-width:25px 25px 0; /* vary these values to change the angle of the vertex */
+  border-style:solid;
+  border-color:#EEEFEB transparent;
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.triangle-isosceles.left:after {
+  top:55px; /* controls vertical position */
+  left:-50px; /* value = - border-left-width - border-right-width */
+  bottom:auto;
+  border-width:20px 50px 20px 0;
+  border-color:transparent #EEEFEB;
 }

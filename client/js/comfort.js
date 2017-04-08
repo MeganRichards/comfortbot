@@ -170,6 +170,7 @@ $( document ).ready(function() {
 		return SET;
 	}
     
+    // just a test function, ignore it
 	$('#comfort_vals').submit(function(event) {
 		event.preventDefault();
 		// get all the inputs into an array.

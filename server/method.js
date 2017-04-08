@@ -8,8 +8,8 @@ Meteor.methods({
 		if (Rooms.find({name: room.name}).count == 0) {
 			Rooms.insert({
 				name: room.name,
-				x: 10,
-				y: 10,
+				x: room.x,
+				y: room.y,
 				years: [],
 				created_at: new Date(),
 			});
