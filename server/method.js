@@ -32,10 +32,32 @@ Meteor.methods({
 			room: map.room,
 			day: map.day,
 			month: map.month,
-			year: map.year
-			//created_at: new Date(),
+			year: map.year,
+			created_at: new Date(),
 		});
 	},
+
+	/**
+	 * Gets the most recent map created to be the default display
+	 * on the page, given some room
+	 * 
+	 */
+	 'setLatestMap': function() {
+	 	var map = Points.findOne({}, {sort: {year: -1, limit: 1}});
+	    // Meteor.call('updateLoadedMap', data);
+
+	    if (LoadedMap.find().count() != 0) {
+			LoadedMap.remove({});
+		}
+
+		LoadedMap.insert({
+			room: map.room,
+			day: map.day,
+			month: map.month,
+			year: map.year,
+			created_at: new Date(),
+		});
+	 },
 
 	'insertTest': function() {
 		room_name = "BBW280";
@@ -68,6 +90,15 @@ Meteor.methods({
 		d = new Date();
 		date_key = "" + d.getFullYear() + d.getMonth() + d.getDate();
 		key = "x" + point.x + "y" + point.y;
+
+		console.log("running function " + Points.find({room: room_name, x: point.x, y: point.y, year: d.getFullYear(), month: d.getMonth(), day: d.getDate()}).count());
+
+
+		// if point already exists, delete it and replace with this new data
+		if (Points.find({room: room_name, x: point.x, y: point.y, year: d.getFullYear(), month: d.getMonth(), day: d.getDate()}).count() >= 1) {
+			console.log("removed old point");
+			Points.remove({room: room_name, x: point.x, y: point.y, year: d.getFullYear(), month: d.getMonth(), day: d.getDate()});
+		}
 
 		// insert the data into the database
 		Points.insert({

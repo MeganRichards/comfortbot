@@ -98,6 +98,9 @@ var get_data = function(d, selection) {
 };
 
 Template.past.events({
+  'click .nav .green'(event, instance) {
+    // TODO: highlight LoadedMap date.
+  }.
   /*
     not the best solution admittedly
 
@@ -128,7 +131,9 @@ Template.past.events({
       // if there's an error with classList, it's because there's no data
       // from today
       var previous = document.getElementById(instance.room.get() + "-" + current);
-      previous.classList.remove("selected");
+      if (previous != null) {
+        previous.classList.remove("selected");
+      }
 
       // highlight current node
       event.currentTarget.className += " selected";
@@ -255,6 +260,20 @@ Template.map.onRendered(function() {
         instance.humidity.set(d.humidity);
         instance.comfort.set(get_data(d, 0));
 
+
+        // ATTENTION!!!  This portion is terrible.
+        // This is because I added a cool triangle to the left
+        // of the "stats" box, which is a visual aid for seeing
+        // which box you're seeing values for.
+        // However, the css uses static values, so if anything
+        // changes, like the size of each data point box, this 
+        // suddenly doesn't work.  My recommendation is to use 
+        // jquery with the .css() option to pass in calculated values
+        // here.  Then, the box will get drawn properly for any size,
+        // which is what we want.  What needs to change is the
+        // .triangle-isosceles.left:after {top: 55px} value.
+        // That needs to be dynamic.  And possibly the border-width
+        // in that one too.  I don't know what else.
         if (d == instance.d.get()) {
           instance.d.set({});
           $("#stats").hide();
@@ -296,8 +315,17 @@ Template.map.onRendered(function() {
       legend.exit().remove(); 
     };
 
+    //var datas = Points.find({room: map.room, year: map.year, month: map.month, day: map.day});
     LoadedMap.find().observe({
+    //Points.find({room: map.room, year: map.year, month: map.month, day: map.day}).observe({
       added: function () {
+        var map = LoadedMap.findOne({});
+        Points.find({room: map.room, year: map.year, month: map.month, day: map.day}).observe({
+          added: function () {
+          comfortmapChart(false);
+        },
+          changed: _.partial(comfortmapChart, true)
+        });
         // x = d3.scale.ordinal()
         //   .domain(d3.range(LoadedMap.findOne().data.length))
         //   .rangePoints([0, width], 1);
