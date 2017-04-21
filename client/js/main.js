@@ -100,7 +100,7 @@ var get_data = function(d, selection) {
 Template.past.events({
   'click .nav .green'(event, instance) {
     // TODO: highlight LoadedMap date.
-  }.
+  },
   /*
     not the best solution admittedly
 
@@ -322,8 +322,8 @@ Template.map.onRendered(function() {
         var map = LoadedMap.findOne({});
         Points.find({room: map.room, year: map.year, month: map.month, day: map.day}).observe({
           added: function () {
-          comfortmapChart(false);
-        },
+            comfortmapChart(false);
+          },
           changed: _.partial(comfortmapChart, true)
         });
         // x = d3.scale.ordinal()
