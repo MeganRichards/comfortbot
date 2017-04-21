@@ -5,9 +5,8 @@ import '../main.html';
 
 Template.map.onCreated(function mapOnCreated() {
   //Meteor.subscribe('loaded_map');
-  this.temperature = new ReactiveVar(0);
-  this.humidity = new ReactiveVar(0);
   this.comfort = new ReactiveVar(0);
+  this.point = new ReactiveVar({});
 
   this.d = new ReactiveVar({});
 });
@@ -35,16 +34,20 @@ Template.map.helpers({
   year() {
     return LoadedMap.findOne({}).year;
   },
-  temperature() {
-    return Template.instance().temperature.get();
-  },
-  humidity() {
-    return Template.instance().humidity.get();
-  },
   comfort() {
     return Template.instance().comfort.get();
+  },
+  point() {
+	return Template.instance().point.get();
+  },
+  // shorten long float values
+  shorten_float(f) {
+	dec_points = 2;
+	return f.toFixed(dec_points);
   }
 });
+
+
 
 // TODO: separate into it's own file
 Template.past.helpers({
@@ -256,8 +259,8 @@ Template.map.onRendered(function() {
 
       // update stats template
       cards.on("click", function(d, i) {
-        instance.temperature.set(d.temp);
-        instance.humidity.set(d.humidity);
+
+		instance.point.set(d);
         instance.comfort.set(get_data(d, 0));
 
 

@@ -46,6 +46,10 @@ Meteor.methods({
 	 	var map = Points.findOne({}, {sort: {year: -1, limit: 1}});
 	    // Meteor.call('updateLoadedMap', data);
 
+		if (map === undefined) {
+			return;
+		}
+
 	    if (LoadedMap.find().count() != 0) {
 			LoadedMap.remove({});
 		}

@@ -199,7 +199,7 @@ text.axis-worktime {
 }
 
 .triangle-isosceles.left:after {
-  top:55px; /* controls vertical position */
+  top:75px; /* controls vertical position */
   left:-50px; /* value = - border-left-width - border-right-width */
   bottom:auto;
   border-width:20px 50px 20px 0;

@@ -13,9 +13,11 @@
 	  </div>
 	  <br>
 	  <ul id="point-stats">
-	    <li>Temp: {{temperature}} &#176;C</li>
-	    <li>Humidity: {{humidity}} humidity ratings</li>
-	    <li>Comfort: {{comfort}} comforts</li>
+	    <li>Temp: {{shorten_float point.temp}} &#176;C</li>
+	    <li>Humidity: {{shorten_float point.humidity}} humidity ratings</li>
+	    <li>Radiant temp: {{shorten_float point.rad_temp}} &#176;C</li>
+	    <li>Velocity: {{shorten_float point.velocity}} m/s</li>
+	    <li>Comfort: {{shorten_float comfort}} comforts</li>
 	  </ul>
     </div>	
 </template>
