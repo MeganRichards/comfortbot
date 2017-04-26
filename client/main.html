@@ -19,18 +19,18 @@
 
   <ul class="nav nav-tabs">
     <li class="active"><a class="blue" data-toggle="tab" href="#maps">Current Map</a></li>
-    <li><a class="red" data-toggle="tab" href="#video">Live View</a></li>
+    <li><a class="red" data-toggle="tab" href="#graph">Live View</a></li>
     <li><a class="green" data-toggle="tab" href="#past">Past Maps</a></li>
   </ul>
 
   <div class="tab-content">
     <div id="maps" class="tab-pane fade in active">
       {{> map}}
-      {{> stats}}
+      <!-- {{> stats}} -->
     </div>
-    <div id="video" class="tab-pane fade">
-      {{> video}}
-      {{> stats}}
+    <div id="graph" class="tab-pane fade">
+      {{> graph}}
+      <!-- {{> stats}} -->
     </div>
     <div id="past" class="tab-pane fade">
       {{> past}}

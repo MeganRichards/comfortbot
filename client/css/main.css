@@ -160,6 +160,10 @@ text.axis-worktime {
 	list-style: none;
 }
 
+#point-stats th {
+  margin-right: 10px;
+}
+
 /* for creating speech bubbles */
 
 .triangle-isosceles {
@@ -204,4 +208,17 @@ text.axis-worktime {
   bottom:auto;
   border-width:20px 50px 20px 0;
   border-color:transparent #EEEFEB;
+}
+
+
+/* ASHRAE graph */
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
 }

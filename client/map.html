@@ -9,15 +9,39 @@
 	<div id="stats" class="triangle-isosceles left">
 	  <div id="comfort">
 	    <!--<div class="circle"></div> -->
-	    <div id="comfort-desc">Comfort Level: A+!</div>
+	    <div id="comfort-desc">Comfort Stats</div>
 	  </div>
 	  <br>
-	  <ul id="point-stats">
+	  <!--<ul id="point-stats">-->
+	  	<table id="point-stats">
+		  <tr>
+		    <th>Temp</th>
+		    <td>{{shorten_float point.temp}} &#176;C</td>
+		  </tr>	
+		  <tr>
+		    <th>Radiant temp</th>
+		    <td>{{shorten_float point.rad_temp}} &#176;C</td>
+		  </tr>	
+		  <tr>
+		    <th>Humidity</th>
+		    <td>{{shorten_float point.humidity}} humidity ratings</td>
+		  </tr>	
+		  <tr>
+		    <th>Velocity</th>
+		    <td>{{shorten_float point.velocity}} m/s</td>
+		  </tr>	
+		  <tr>
+		    <th>Comfort</th>		    
+		    <td>{{shorten_float comfort}} comforts</td>	    
+		  </tr>			  		  		  		  	    
+		</table>
+		<!--
 	    <li>Temp: {{shorten_float point.temp}} &#176;C</li>
 	    <li>Humidity: {{shorten_float point.humidity}} humidity ratings</li>
 	    <li>Radiant temp: {{shorten_float point.rad_temp}} &#176;C</li>
 	    <li>Velocity: {{shorten_float point.velocity}} m/s</li>
 	    <li>Comfort: {{shorten_float comfort}} comforts</li>
 	  </ul>
+	  -->
     </div>	
 </template>
