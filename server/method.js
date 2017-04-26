@@ -5,7 +5,7 @@ Meteor.methods({
 	 * @param room The room to be created
 	 */
 	'insertRoom': function(room) {
-		if (Rooms.find({name: room.name}).count == 0) {
+		if (Rooms.find({name: room.name}).count() == 0) {
 			Rooms.insert({
 				name: room.name,
 				x: room.x,
@@ -94,9 +94,6 @@ Meteor.methods({
 		d = new Date();
 		date_key = "" + d.getFullYear() + d.getMonth() + d.getDate();
 		key = "x" + point.x + "y" + point.y;
-
-		console.log("running function " + Points.find({room: room_name, x: point.x, y: point.y, year: d.getFullYear(), month: d.getMonth(), day: d.getDate()}).count());
-
 
 		// if point already exists, delete it and replace with this new data
 		if (Points.find({room: room_name, x: point.x, y: point.y, year: d.getFullYear(), month: d.getMonth(), day: d.getDate()}).count() >= 1) {

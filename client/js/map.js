@@ -88,7 +88,11 @@ Template.map.onRendered(function() {
       if (LoadedMap.find().count() == 0) return;
 
       // link to Rooms.findOne({name: map.room}).x and y;
-      var dim_x = 10, dim_y = 10;
+      var room_name = LoadedMap.findOne().room;
+      console.log("ROOMNAME " + room_name);
+      var room = Rooms.findOne({name: room_name});
+      console.log(room + ", " + room);
+      var dim_x =room.x, dim_y = room.y;
       days = [];
       times = [];
       for (i = 0; i < dim_x; i++) {

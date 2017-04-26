@@ -4,7 +4,8 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import '../graph.html';
 
 Template.graph.onCreated(function graphOnCreated() {
-
+	// x-axis (operative temperature) : 10-40 range
+	// y-axis (humidity ratio) : 0-.026 range
 });
 
 Template.graph.helpers({

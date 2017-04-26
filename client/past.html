@@ -9,8 +9,8 @@
 			<ul>
 				{{#each years}}
 					<li>
-						<input id="{{name}}{{this}}" type="checkbox" />
-						<label class="tree_label" for="{{name}}{{this}}">{{this}}</label>
+						<input id="{{../name}}{{this}}" type="checkbox" />
+						<label class="tree_label" for="{{../name}}{{this}}">{{this}}</label>
 						<ul>
 							{{#each day ../name this}}
 							    {{#if current_room this}}
