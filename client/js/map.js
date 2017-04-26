@@ -57,7 +57,7 @@ var get_id = function(name, year, month, day) {
 // TODO: use a selection var to choose what data to display
 // from the d database variable
 var get_data = function(d, selection) {
-  return pierceSet(d.temp, d.rad_temp, d.humidity, d.velocity, 1, 0.5, 40, 101.0);
+  return pierceSet(d.temp, d.rad_temp, d.velocity, d.humidity, 1, 0.6, 65, 83.4);
 };
 
 Template.map.onRendered(function() {
@@ -89,10 +89,14 @@ Template.map.onRendered(function() {
 
       // link to Rooms.findOne({name: map.room}).x and y;
       var room_name = LoadedMap.findOne().room;
-      console.log("ROOMNAME " + room_name);
       var room = Rooms.findOne({name: room_name});
-      console.log(room + ", " + room);
       var dim_x =room.x, dim_y = room.y;
+
+      // update height of svg canvas
+      var height = gridSize * dim_y + 100;
+      svg.attr("height", height);
+      console.log("WIDTH: " + height);
+
       days = [];
       times = [];
       for (i = 0; i < dim_x; i++) {
